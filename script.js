@@ -1,18 +1,17 @@
-// Event listener for file input change (when the user selects an image)
+// Handle image upload and send it to the Flask backend for prediction
 document.getElementById('uploadInput').addEventListener('change', async function(event) {
-    const formData = new FormData();
-    formData.append("image", event.target.files[0]); // Attach the selected file to the form data
+  const formData = new FormData();
+  formData.append("image", event.target.files[0]);
 
-    // Send the image file to the Flask backend for prediction
-    const response = await fetch('/predict', {
-        method: 'POST',
-        body: formData,
-    });
+  // Send the image to the Flask backend
+  const response = await fetch('/predict', {
+    method: 'POST',
+    body: formData,
+  });
 
-    // Parse the JSON response from Flask
-    const data = await response.json();
+  const data = await response.json();
 
-    // Display the prediction result and confidence value on the page
-    document.getElementById('predictionResult').textContent = data.prediction;
-    document.getElementById('confidenceValue').textContent = `${data.confidence}%`;
+  // Display the result on the page
+  document.getElementById('predictionResult').textContent = data.prediction;
+  document.getElementById('confidenceValue').textContent = `${data.confidence}%`;
 });
